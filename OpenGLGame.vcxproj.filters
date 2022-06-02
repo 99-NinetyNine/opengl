@@ -63,7 +63,10 @@
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OGL3D\source\OGL3D\Graphics\OModel.cpp">
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\uOModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\ModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,7 +140,10 @@
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OGL3D\include\OGL3D\Graphics\OModel.h">
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\uOModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\ModelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

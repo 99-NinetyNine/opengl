@@ -6,7 +6,7 @@
 #include <OGL3D/Graphics/OTexture.h>
 #include <OGL3D/Graphics/Camera.h>
 #include <OGL3D/Graphics/Mesh.h>
-#include <OGL3D/Graphics/Model.h>
+#include <OGL3D/Graphics/ModelLoader.h>
 
 #include <OGL3D/Math/OVec3.h>
 #include <glad/glad_wgl.h>
@@ -94,7 +94,7 @@ OCameraPtr OGraphicsEngine::createCamera()
 }
 OModelPtr OGraphicsEngine::createModel(const char* filename)
 {
-    return std::make_shared<OModel>(filename);
+    return std::make_shared<ModelLoader>(filename);
 }
 
 void OGraphicsEngine::drawModel(OModelPtr m,ShaderPtr shader_ptr, OCameraPtr camera_ptr)

@@ -9,7 +9,7 @@
 #include <OGL3D/Math/MathUtils.h>
 #include <OGL3D/InputSystem/InputSystem.h>
 #include <OGL3D/Graphics/Camera.h>
-#include <OGL3D/Graphics/OModel.h>
+#include <OGL3D/Graphics/ModelLoader.h>
 
 struct UniformData
 {
@@ -69,7 +69,7 @@ void OGame::onCreate()
 	
 
 	// Load in a model
-	m_model = m_graphicsEngine->createModel("D:/5th sem/graph/project/OpenGLGame/Assets/models/sword/sword.gltf");
+	m_model = m_graphicsEngine->createModel("D:/5th sem/graph/project/OpenGLGame/Assets/models/guitar/backpack.obj");
 	
 	m_camera=m_graphicsEngine->createCamera();
 	

@@ -12,8 +12,8 @@ class OShaderProgram;
 class OTexture;
 class Shader;
 class Camera;
-class OModel;
 class Mesh;
+class ModelLoader;
 
 typedef std::shared_ptr<OVertexArrayObject> OVertexArrayObjectPtr;
 typedef std::shared_ptr<OUniformBuffer> OUniformBufferPtr;
@@ -22,7 +22,7 @@ typedef std::shared_ptr<OTexture> OTexturePtr;
 typedef std::shared_ptr<Shader> ShaderPtr;
 typedef std::shared_ptr<Camera> OCameraPtr;
 typedef std::shared_ptr<Mesh> OMeshPtr;
-typedef std::shared_ptr<OModel> OModelPtr;
+typedef std::shared_ptr<ModelLoader> OModelPtr;
 
 
 typedef float f32;

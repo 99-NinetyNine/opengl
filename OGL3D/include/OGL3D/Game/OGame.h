@@ -13,7 +13,7 @@
 #include <chrono>
 class OGraphicsEngine;
 class OWindow;
-class Model;
+class ModelLoader;
 
 
 class OGame: public InputListener

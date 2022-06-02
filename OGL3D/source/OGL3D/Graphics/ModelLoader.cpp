@@ -1,18 +1,18 @@
-#include <OGL3D/Graphics/OModel.h>
+#include <OGL3D/Graphics/ModelLoader.h>
 
-OModel::OModel(string const& path, bool gamma)
+ModelLoader::ModelLoader(string const& path, bool gamma)
 {
-	gammaCorrection=gamma;
-	loadModel(path);
+    gammaCorrection = gamma;
+    loadModel(path);
 }
 
-void OModel::Draw(ShaderPtr shader)
+void ModelLoader::Draw(ShaderPtr shader)
 {
-	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].Draw(shader);
+    for (unsigned int i = 0; i < meshes.size(); i++)
+        meshes[i].Draw(shader);
 }
 
-void OModel::loadModel(string const& path)
+void ModelLoader::loadModel(string const& path)
 {
     // read file via ASSIMP
     Assimp::Importer importer;
@@ -30,7 +30,7 @@ void OModel::loadModel(string const& path)
     processNode(scene->mRootNode, scene);
 }
 
-void OModel::processNode(aiNode* node, const aiScene* scene)
+void ModelLoader::processNode(aiNode* node, const aiScene* scene)
 {
     // process each mesh located at the current node
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
@@ -48,7 +48,7 @@ void OModel::processNode(aiNode* node, const aiScene* scene)
 
 }
 
-Mesh OModel::processMesh(aiMesh* mesh, const aiScene* scene)
+Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene)
 {
     // data to fill
     vector<Vertex> vertices;
@@ -132,7 +132,7 @@ Mesh OModel::processMesh(aiMesh* mesh, const aiScene* scene)
     return Mesh(vertices, indices, textures);
 }
 
-vector<Texture> OModel::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
+vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
 {
     vector<Texture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)

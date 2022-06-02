@@ -159,7 +159,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OGL3D\source\OGL3D\Graphics\OModel.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\ModelLoader.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\uOModel.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Model.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Mesh.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Camera.cpp" />
@@ -183,11 +184,12 @@
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\ModelLoader.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Model.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Mesh.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Camera.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Game\OGame.h" />
-    <ClInclude Include="OGL3D\include\OGL3D\Graphics\OModel.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\uOModel.h" />
     <ClInclude Include="OGL3D\include\OGL3D\InputSystem\InputListener.h" />
     <ClInclude Include="OGL3D\include\OGL3D\InputSystem\InputSystem.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Math\MathUtils.h" />
