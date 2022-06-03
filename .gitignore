@@ -6,10 +6,12 @@
 
 ## our
 .vs/*
-OGL3D/vendor/assimp
-Assets/*
+##
+#OGL3D/vendor/assimp
+#Assets/Models
+#Assets/Images
 
-
+#just for once
 ##
 
 
