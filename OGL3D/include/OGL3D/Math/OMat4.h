@@ -1,8 +1,10 @@
-
 #pragma once
+
 #include <OGL3D/OPrerequisities.h>
+
 #include "OVec4.h"
 #include "OVec3.h"
+#include "OQuaternion.h"
 #include <memory>
 #include <vector>
 class OMat4
@@ -14,24 +16,102 @@ public:
 	}
 	OMat4(f32 x)
 	{
-		if (x == 1)
-		{
 			setIdentity();
-		}
 	}
 	static OMat4 make_mat4(std::vector<f32>&  m)
 	{
 		OMat4 res;
-		ui32 k = 0;
-		for (ui32 i = 0;i < 4;i++)
+		int k = 0;
+		for (int i = 0;i < 4;i++)
 		{
-			for (ui32 j = 0;j < 4;j++)
+			for (int j = 0;j < 4;j++)
 			{
 				res.m_mat[i][j] = m[k];
 				k++;
 			}
 		}
 		return res;
+	}
+	static OMat4 mat4_cast(const OQuaternion& quat)
+	{
+		float x = quat.m_x;
+		float y= quat.m_y;
+		float z = quat.m_z;
+		float w = quat.m_w;
+
+		float xy = x * y;
+		float xz = x * z;
+		float xw = x * w;
+		float yz = y * z;
+		float yw = y * w;
+		float zw = z * w;
+		float xsq = x * x;
+		float ysq = y * y;
+		float zsq = z * z;
+
+		OMat4 res;
+		res.m_mat[0][0] = 1 - 2 * (ysq + zsq);
+		res.m_mat[0][1] = 2 * (xy - zw);
+		res.m_mat[0][2] = 2 * (xz + yw);
+		res.m_mat[0][3] = 0;
+
+		res.m_mat[1][0] = 2 * (xy + zw);
+		res.m_mat[1][1] = 1 - 2 * (xsq+zsq);
+		res.m_mat[1][2] = 2 * (yz - xw);
+		res.m_mat[1][3] = 0;
+
+		res.m_mat[2][0] = 2 * (xz - yw);
+		res.m_mat[2][1] = 2 * (yz+xw);
+		res.m_mat[2][2] = 1 - 2 * (xsq + ysq);
+		res.m_mat[2][3] = 0;
+
+		res.m_mat[3][0] = 0;
+		res.m_mat[3][1] = 0;
+		res.m_mat[3][2] = 0;
+		res.m_mat[3][3] = 1;
+		return res;
+
+
+	}
+	static OMat4 mat4_casttt(const OQuaternion& quat)
+	{
+		float wx, wy, wz, xx, yy, yz, xy, xz, zz, x2, y2, z2;
+		OMat4 res;
+
+		// calculate coefficients
+		x2 = quat.m_x + quat.m_x; y2 = quat.m_y + quat.m_y;
+		z2 = quat.m_z + quat.m_z;
+		xx = quat.m_x * x2; xy = quat.m_x * y2; xz = quat.m_x * z2;
+		yy = quat.m_y * y2; yz = quat.m_y * z2; zz = quat.m_z * z2;
+		wx = quat.m_w * x2; wy = quat.m_w * y2; wz = quat.m_w * z2;
+
+
+		res.m_mat[0][0] = 1.0 - (yy + zz);
+		res.m_mat[0][1] = xy - wz;
+		res.m_mat[0][2] = xz + wy; 
+		res.m_mat[0][3] = 0.0;
+
+		res.m_mat[1][0] = xy + wz;
+		res.m_mat[1][1] = 1.0 - (xx + zz);
+		res.m_mat[1][2] = yz - wx;
+		res.m_mat[1][3] = 0.0;
+
+
+		res.m_mat[2][0] = xz - wy;
+		res.m_mat[2][1] = yz + wx;
+		res.m_mat[2][2] = 1.0 - (xx + yy);
+		res.m_mat[2][3] = 0.0;
+
+
+		res.m_mat[0][3] = 0; 
+		res.m_mat[1][3] = 0;
+		res.m_mat[2][3] = 0; 
+		res.m_mat[3][3] = 1;
+		
+		return res;
+		
+		
+		//return OMat4::mat4_cast(OVec4(q.m_x, q.m_y, q.m_z, q.m_w));
 	}
 	static OMat4 mat4_cast(const OVec4& q)
 
@@ -74,6 +154,15 @@ public:
 		m_mat[2][2] = 1;
 		m_mat[3][3] = 1;
 	}
+
+	void removeTranslation()
+	{
+		m_mat[0][3] = 0;
+		m_mat[1][3] = 0;
+		m_mat[2][3] = 0;
+		m_mat[3][3] = 1;
+	}
+
 
 	void setTranslation(const OVec3& translation)
 	{
@@ -177,6 +266,14 @@ public:
 			}
 		}
 		setMatrix(out);
+	}
+
+	OMat4 operator * (const OMat4& m2)
+	{
+		OMat4 res;
+		res *= (*this);
+		res *= (m2);
+		return res;
 	}
 
 	void setMatrix(const OMat4& matrix)

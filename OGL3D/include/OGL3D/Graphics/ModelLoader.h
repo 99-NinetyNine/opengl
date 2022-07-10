@@ -30,6 +30,7 @@ public:
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection = false;
+    bool rus_house = false;
 
 public:
     // constructor, expects a filepath to a 3D model.

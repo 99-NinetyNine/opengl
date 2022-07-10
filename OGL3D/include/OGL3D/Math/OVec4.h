@@ -11,19 +11,19 @@ public:
 	OVec4(float x, float y, float z, float w) :m_x(x), m_y(y), m_z(z), m_w(w)
 	{
 	}
-	OVec4(const OVec4& vector) :m_x(vector.m_x), m_y(vector.m_y), m_z(vector.m_z), m_w(vector.m_w)
+	OVec4(const OVec4& vec) :m_x(vec.m_x), m_y(vec.m_y), m_z(vec.m_z), m_w(vec.m_w)
 	{
 	}
-	OVec4(const OVec3& vector) :m_x(vector.m_x), m_y(vector.m_y), m_z(vector.m_z), m_w(1.0)
+	OVec4(const OVec3& vec) :m_x(vec.m_x), m_y(vec.m_y), m_z(vec.m_z), m_w(1.0)
 	{
 	}
-	static OVec4 make_vec4(std::vector<f32>& vector)
+	static OVec4 make_vec4(std::vector<float>& vec)
 	{
 		OVec4 res;
-		res.m_x = vector[0];
-		res.m_y=vector[1];
-		res.m_z=vector[2];
-		res.m_w=vector[3];
+		res.m_x = vec[0];
+		res.m_y=vec[1];
+		res.m_z=vec[2];
+		res.m_w=vec[3];
 		return res;
 	}
 
@@ -34,7 +34,14 @@ public:
 		this->m_z = v1.m_x * (v2.m_y * v3.m_w - v3.m_y * v2.m_w) - v1.m_y * (v2.m_x * v3.m_w - v3.m_x * v2.m_w) + v1.m_w * (v2.m_x * v3.m_y - v3.m_x * v2.m_y);
 		this->m_w = -(v1.m_x * (v2.m_y * v3.m_z - v3.m_y * v2.m_z) - v1.m_y * (v2.m_x * v3.m_z - v3.m_x * v2.m_z) + v1.m_z * (v2.m_x * v3.m_y - v3.m_x * v2.m_y));
 	}
-
+	OVec4 operator = (const OVec4& vec)
+	{
+		m_x = vec.m_x;
+		m_y = vec.m_y;
+		m_z = vec.m_z;
+		m_w = vec.m_w;
+		return *this;
+	}
 	~OVec4()
 	{
 	}

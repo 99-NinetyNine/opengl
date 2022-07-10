@@ -10,6 +10,7 @@ public:
     Shader(const ShaderDesc& desc);
     ~Shader();
     void use();
+    void notuse();
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
@@ -18,6 +19,7 @@ public:
     void setVec3(const std::string& name, f32 x, f32 y, f32 z) const;
     void setVec4(const std::string& name, const OVec4& vec);
     void setMat4(const std::string& name, const OMat4& mat) const;
+    
     ui32 getID();
     //void setVec2(const std::string& name, const vec2& value) const;
     //void setMat2(const std::string& name, const mat2& mat) const;

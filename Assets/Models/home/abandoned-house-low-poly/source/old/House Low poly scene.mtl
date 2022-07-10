@@ -1,0 +1,148 @@
+# Wavefront .mtl file  -  created by SpaceDraw
+
+# File created: 20-11-27, 11:34
+
+newmtl gorund
+Ns 128.0
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.50189996 0.50189996 0.50189996 
+Kd 0.50189996 0.50189996 0.50189996 
+Ks 0.0 0.0 0.0 
+Ke 0.0 0.0 0.0 
+map_Ka gorund.jpg
+map_Kd gorund.jpg
+
+newmtl Concrete
+Ns 20.0
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.59599996 0.59599996 0.59599996 
+Kd 0.59599996 0.59599996 0.59599996 
+Ks 0.0 0.0 0.0 
+Ke 0.0 0.0 0.0 
+map_Ka Concrete.jpg
+map_Kd Concrete.jpg
+
+newmtl Door
+Ns 128.0
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.50189996 0.50189996 0.50189996 
+Kd 0.50189996 0.50189996 0.50189996 
+Ks 0.0 0.0 0.0 
+Ke 0.0 0.0 0.0 
+map_Ka door.jpg
+map_Kd door.jpg
+
+newmtl Roof
+Ns 118.200005
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.41959998 0.41959998 0.41959998 
+Kd 0.41959998 0.41959998 0.41959998 
+Ks 0.48229998 0.48229998 0.48229998 
+Ke 0.0 0.0 0.0 
+map_Ka corrygatedmetal.jpg
+map_Kd corrygatedmetal.jpg
+
+newmtl plank
+Ns 20.0
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.5058 0.5058 0.5058 
+Kd 0.5058 0.5058 0.5058 
+Ks 0.0 0.0 0.0 
+Ke 0.0 0.0 0.0 
+map_Ka plank.jpg
+map_Kd plank.jpg
+
+newmtl rustedmetal)
+Ns 117.4
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.43919998 0.43919998 0.43919998 
+Kd 0.43919998 0.43919998 0.43919998 
+Ks 0.3098 0.3098 0.3098 
+Ke 0.0 0.0 0.0 
+map_Ka rustedmetal).jpg
+map_Kd rustedmetal).jpg
+
+newmtl steelold1
+Ns 51.8
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.5372 0.5647 0.5725 
+Kd 0.5372 0.5647 0.5725 
+Ks 0.6588 0.6588 0.6588 
+Ke 0.0 0.0 0.0 
+map_Ka steelold.jpg
+map_Kd steelold.jpg
+
+newmtl corrygatedmetal
+Ns 101.0
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.50189996 0.50189996 0.50189996 
+Kd 0.50189996 0.50189996 0.50189996 
+Ks 0.50189996 0.50189996 0.50189996 
+Ke 0.0 0.0 0.0 
+map_Ka corrygatedmetal.jpg
+map_Kd corrygatedmetal.jpg
+
+newmtl steelold
+Ns 93.8
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.3333 0.3333 0.3333 
+Kd 0.3333 0.3333 0.3333 
+Ks 0.50189996 0.50189996 0.50189996 
+Ke 0.0 0.0 0.0 
+map_Ka steelold.jpg
+map_Kd steelold.jpg
+
+newmtl Steelold_Green
+Ns 93.5
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.8156 0.8156 0.8156 
+Kd 0.8156 0.8156 0.8156 
+Ks 0.6588 0.6588 0.6588 
+Ke 0.0 0.0 0.0 
+map_Ka Steelold_Green.jpg
+map_Kd Steelold_Green.jpg
+
+newmtl wires
+Ns 111.4
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.31759998 0.31759998 0.31759998 
+Kd 0.31759998 0.31759998 0.31759998 
+Ks 0.247 0.247 0.247 
+Ke 0.0 0.0 0.0 
+map_Ka platic).jpg
+map_Kd platic).jpg
+
+newmtl Brick
+Ns 128.0
+d 1.0
+Tr 0.0
+illum 2
+Ka 0.7725 0.7725 0.7725 
+Kd 0.7725 0.7725 0.7725 
+Ks 0.0 0.0 0.0 
+Ke 0.0 0.0 0.0 
+map_Ka Concrete red brick.jpg
+map_Kd Concrete red brick.jpg
+

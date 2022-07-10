@@ -10,6 +10,10 @@
 #include <OGL3D/InputSystem/InputSystem.h>
 #include <OGL3D/Graphics/Camera.h>
 #include <OGL3D/Graphics/ModelLoader.h>
+#include <OGL3D/Graphics/ModelAnimation.h>
+#include <OGL3D/Graphics/Animation.h>
+#include <OGL3D/Graphics/Animators.h>
+
 
 struct UniformData
 {
@@ -30,6 +34,7 @@ OGame::OGame()
 	m_graphicsEngine->setViewport(m_display->getInnerSize());
 	m_graphicsEngine->enable_depth_test();
 	InputSystem::create();
+
 }
 
 OGame::~OGame()
@@ -44,50 +49,177 @@ void OGame::onCreate()
 
 	m_play_state = true;
 	InputSystem::get()->showCursor(false);
+	//animated models
+	model_bird		= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/vampire/source/fly.fbx";
+	model_falcon	= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/rock/source1/rock.fbx";
+	model_man		= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/man/source/Mr_Man_Walking.fbx";
+	model_iron		= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/iron/source/iron_man.fbx";
 
+	//just model
+	model_jap_house = "D:/5th sem/graph/project/OpenGLGame/Assets/Models/home/lowpoly-japanese-old-house/source/JapaneseOldHouse/JapaneseOldHouse.fbx";
+	model_rus_house = "D:/5th sem/graph/project/OpenGLGame/Assets/Models/home/old-russian-house/source/dom.fbx";
+	model_old_house = "D:/5th sem/graph/project/OpenGLGame/Assets/Models/home/abandoned-house-low-poly/source/old/H.obj";
 	
-	//m_uniform = m_graphicsEngine->createUniformBuffer({
-		//sizeof(UniformData)
-		//});
+	model_thor		= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/house/thor/thor_hammer.obj";
+	model_tree		= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/house/tree/c/Tree1.3ds";
+	model_rocket	= "D:/5th sem/graph/project/OpenGLGame/Assets/Models/house/rocket/12217_rocket_v1_l1.obj";
+	model_airplane = "D:/5th sem/graph/project/OpenGLGame/Assets/Models/rock/proj/source/project.obj";;
+	
+	
+	//model_name = "D:/5th sem/graph/project/OpenGLGame/Assets/Models/guitar/backpack.obj";
 
-	/*m_shader = m_graphicsEngine->createShaderProgram(
-		{
-			L"Assets/Shaders/BasicShader.vert",
-			L"Assets/Shaders/BasicShader.frag"
-		});*/
-	//m_shader->setUniformBufferSlot("UniformData", 0);
-	//m_graphicsEngine->setShaderProgram(m_shader);
+	float vertices[] = {
+		// positions          // normals           // texture coords
+		-0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+
+		-0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+
+		-0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f, -0.5f,
+
+		-0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f
+	};
+	OVertexAttribute attr[] = { 3 };
+	m_polygonVAO = m_graphicsEngine->createVertexArrayObject({
+		(void*)vertices,
+		nullptr,
+		12,
+		3*36*4,
+		0,
+		attr,
+		1,
+	});
+
+
+	// positions of the point lights
+	pointLightPositions.push_back(OVec3(0.0f,2.0f, 2.5f));
+	pointLightPositions.push_back(OVec3(50.0f, -05.0f, 4.0f));
+	pointLightPositions.push_back(OVec3(-50.0f, -40.0f, 6.0f));
+	pointLightPositions.push_back(OVec3(0.0f, -80.0f, 7.0f));
+
+
+	birdPositions.push_back(OVec3(3.5f, 5.2f, 3.0f));
+	birdPositions.push_back(OVec3(2.5f, 7.3f, 2.0f));
+	birdPositions.push_back(OVec3(-3.0f, 9.0f, 4.0f));
+	birdPositions.push_back(OVec3(-4.4f, 2.0f, 5.0f));
+
+	birdPositions.push_back(OVec3(4.5f, 7.2f, 2.0f));
+	birdPositions.push_back(OVec3(5.5f, 5.3f, 5.0f));
+	birdPositions.push_back(OVec3(-5.5f, 9.0f, 4.0f));
+	birdPositions.push_back(OVec3(-3.5f, 10.0f, 0.0f));
 
 
 	m_shader_prog = m_graphicsEngine->initializeShader(
 		{
-			"Assets/Shaders/BasicShader.vert",
-			"Assets/Shaders/SimpleShader.frag",
+			"Assets/Shaders/ProjectAnimation/AnimationVS.vert",
+			"Assets/Shaders/ProjectAnimation/AnimationPS.frag",
 			nullptr,
 		});
 	
+	m_model_shader= m_graphicsEngine->initializeShader(
+		{
+			"Assets/Shaders/ModelShader/BasicShader.vert",
+			"Assets/Shaders/ModelShader/BasicShader.frag",
+			nullptr,
+		});
+	m_shader_prog_light = m_graphicsEngine->initializeShader(
+		{
+			"Assets/Shaders/ProjectShader/VS.vert",
+			"Assets/Shaders/ProjectShader/PS.frag",
+			nullptr,
+		});
+
 	
+	m_rocket_anim_model = m_graphicsEngine->createAnimationModel(model_falcon);
+	m_rocket_animation = m_graphicsEngine->createAnimation(model_falcon, m_rocket_anim_model);
+	m_rocket_animator = m_graphicsEngine->createAnimator(m_rocket_animation);
+
+	
+
+	m_tony_anim_model = m_graphicsEngine->createAnimationModel(model_iron);
+	m_tony_animation = m_graphicsEngine->createAnimation(model_iron, m_tony_anim_model);
+	m_tony_animator = m_graphicsEngine->createAnimator(m_tony_animation);
 
 	// Load in a model
-	m_model = m_graphicsEngine->createModel("D:/5th sem/graph/project/OpenGLGame/Assets/models/guitar/backpack.obj");
+	//m_model = m_graphicsEngine->createModel("D:/5th sem/graph/project/OpenGLGame/Assets/models/guitar/backpack.obj");
+	/*
+	m_bird_anim_model=m_graphicsEngine->createAnimationModel(model_bird);
+	m_bird_animation=m_graphicsEngine->createAnimation(model_bird, m_bird_anim_model);
+	m_bird_animator=m_graphicsEngine->createAnimator(m_bird_animation);
+
 	
+
+	
+	m_tony_anim_model = m_graphicsEngine->createAnimationModel(model_iron);
+	m_tony_animation = m_graphicsEngine->createAnimation(model_iron, m_tony_anim_model);
+	m_tony_animator = m_graphicsEngine->createAnimator(m_tony_animation);
+	
+	
+	m_man_anim_model = m_graphicsEngine->createAnimationModel(model_man);
+	m_man_animation = m_graphicsEngine->createAnimation(model_man, m_man_anim_model);
+	m_man_animator = m_graphicsEngine->createAnimator(m_man_animation);
+
+	*/
+
+
+
+	//models only
+	
+	//m_jap_house=m_graphicsEngine->createModel(model_jap_house);
+	//m_rus_house=hacked house hhahahm_graphicsEngine->createModel(model_rus_house);
+	m_old_house=m_graphicsEngine->createModel(model_old_house);
+
+	//m_model_thor		= m_graphicsEngine->createModel(model_thor);
+	//m_model_tree		= m_graphicsEngine->createModel(model_tree);
+	//m_model_rocket		= m_graphicsEngine->createModel(model_rocket);
+	m_model_airplane	= m_graphicsEngine->createModel(model_airplane);
+
+
+	ORect rc = m_display->getInnerSize();
 	m_camera=m_graphicsEngine->createCamera();
 	
-	ORect rc = m_display->getInnerSize();
-
 	m_proj_cam.setIdentity();
 	m_proj_cam.setPerspectiveFovLH(OMath::radians(m_camera->Zoom), (float)rc.width / (float)rc.height, 0.1f, 100.0f);
 
-	m_shader_prog->use();
-	m_shader_prog->setMat4("projection", m_proj_cam);
+	//m_camera->changePitchYaw(60.3203011f,-92.1300964f);
 
-	//m_shader_prog_light->use();
-	//m_shader_prog_light->setMat4("projection", m_proj_cam);
-
-
-	// camera
+	setEssentials(m_shader_prog);
+	setEssentials(m_model_shader);
+	setFewEssentials(m_shader_prog_light);
 	
-
 }
 
 void OGame::onUpdate()
@@ -100,149 +232,308 @@ void OGame::onUpdate()
 		elapsedSeconds = currentTime - m_previousTime;
 	m_previousTime = currentTime;
 
-
 	auto deltaTime = (f32)elapsedSeconds.count();
 	m_del = deltaTime;
 
+	
 	m_graphicsEngine->clear(OVec4(0.4, 0.2, 0.1, 1));
-	/*
 
-	//UniformData data = { currentScale };
-	//m_uniform->setData(&data);
-
-	
-	//m_shader_prog->use();
-	//m_shader_prog->setVec3("viewPos", m_camera->Position);
-	//m_shader_prog->setFloat("material.shininess", 32.0f);
-
-	//m_shader_prog->setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-	//m_shader_prog->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-	//m_shader_prog->setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-	//m_shader_prog->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-	//// point light 1
-	//m_shader_prog->setVec3("pointLights[0].position", pointLightPositions[0]);
-	//m_shader_prog->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-	//m_shader_prog->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-	//m_shader_prog->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-	//m_shader_prog->setFloat("pointLights[0].constant", 1.0f);
-	//m_shader_prog->setFloat("pointLights[0].linear", 0.09f);
-	//m_shader_prog->setFloat("pointLights[0].quadratic", 0.032f);
-	//// point light 2
-	//m_shader_prog->setVec3("pointLights[1].position", pointLightPositions[1]);
-	//m_shader_prog->setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-	//m_shader_prog->setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-	//m_shader_prog->setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
-	//m_shader_prog->setFloat("pointLights[1].constant", 1.0f);
-	//m_shader_prog->setFloat("pointLights[1].linear", 0.09f);
-	//m_shader_prog->setFloat("pointLights[1].quadratic", 0.032f);
-	//// point light 3
-	//m_shader_prog->setVec3("pointLights[2].position", pointLightPositions[2]);
-	//m_shader_prog->setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-	//m_shader_prog->setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-	//m_shader_prog->setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-	//m_shader_prog->setFloat("pointLights[2].constant", 1.0f);
-	//m_shader_prog->setFloat("pointLights[2].linear", 0.09f);
-	//m_shader_prog->setFloat("pointLights[2].quadratic", 0.032f);
-	//// point light 4
-	//m_shader_prog->setVec3("pointLights[3].position", pointLightPositions[3]);
-	//m_shader_prog->setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-	//m_shader_prog->setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-	//m_shader_prog->setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-	//m_shader_prog->setFloat("pointLights[3].constant", 1.0f);
-	//m_shader_prog->setFloat("pointLights[3].linear", 0.09f);
-	//m_shader_prog->setFloat("pointLights[3].quadratic", 0.032f);
-	//// spotLight
-	//m_shader_prog->setVec3("spotLight.position", m_camera->Position);
-	//m_shader_prog->setVec3("spotLight.direction", m_camera->Front);
-	//m_shader_prog->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-	//m_shader_prog->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-	//m_shader_prog->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-	//m_shader_prog->setFloat("spotLight.constant", 1.0f);
-	//m_shader_prog->setFloat("spotLight.linear", 0.09f);
-	//m_shader_prog->setFloat("spotLight.quadratic", 0.032f);
-	//m_shader_prog->setFloat("spotLight.cutOff", cos(OMath::radians(12.5f)));
-	//m_shader_prog->setFloat("spotLight.outerCutOff", cos(OMath::radians(15.0f)));
-	//
-	
-	m_graphicsEngine->bindTextureUnits(m_texture_1);
-	m_graphicsEngine->bindTextureUnits(m_texture_2);
-	
-	m_view_cam = m_camera->GetViewMatrix();
-	m_shader_prog->setMat4("view", m_view_cam);
-	
-	OMat4 temp;
-	//m_graphicsEngine->setUniformBuffer(m_uniform, 0);
-	
-	m_graphicsEngine->setVertexArrayObject(m_polygonVAO);
-
-	// world space positions of our cubes
-	OVec3 cubePositions[] = {
-		OVec3(0.0f,  0.0f,  0.0f),
-		OVec3(2.0f,  5.0f, -15.0f),
-		OVec3(-1.5f, -2.2f, -2.5f),
-		OVec3(-3.8f, -2.0f, -12.3f),
-		OVec3(2.4f, -0.4f, -3.5f),
-		OVec3(-1.7f,  3.0f, -7.5f),
-		OVec3(1.3f, -2.0f, -2.5f),
-		OVec3(1.5f,  2.0f, -2.5f),
-		OVec3(1.5f,  0.2f, -1.5f),
-		OVec3(-1.3f,  1.0f, -1.5f)
-	};
-	
-	m_world_cam.setIdentity();
-	m_shader_prog->setMat4("model", m_world_cam);
-	OMat4 model;
-	//m_graphicsEngine->drawTriangles(TriangleStrip, m_polygonVAO->getVertexBufferSize(), 0);
-	for (unsigned int i = 0; i < 10; i++)
+	if(!m_pause_state)
 	{
-		model.setIdentity();	
-		model.setTranslation(cubePositions[i]);
-		float angle = 20.0f * i;
-		model.setRotationX(OMath::radians(angle));
-		m_shader_prog->setMat4("model", model);
-		m_graphicsEngine->drawTriangles(TriangleStrip, m_polygonVAO->getVertexBufferSize(), 0);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-	}
-	// also draw the lamp object(s)
-	m_shader_prog_light->use();
-	
-	m_shader_prog_light->setMat4("view", m_view_cam);
+		m_tony_animator->UpdateAnimation(m_del * m_animation_speed);
+		m_rocket_animator->UpdateAnimation(m_del* m_animation_speed);
+		m_bird_animator->UpdateAnimation(m_del*m_animation_speed);
+		m_man_animator->UpdateAnimation(m_del * m_animation_speed);
 
+	} 
+	
+	
+
+
+
+	/*drawAnimationModel(m_rocket_animator);
+	setTRS(OVec3(0.0f, pos_para.m_y, -20.0f), OVec3(-70.0f,0,.0f), OVec3(0.0030f));
+	setRuntimeEssentials(m_shader_prog);
+	m_rocket_anim_model->Draw(m_shader_prog);
+
+
+
+	
+
+//block for drawing a model
+	// render the loaded model..birds
+	
+	for (int i = 0;i <8;i++)
+	{
+		drawAnimationModel(m_bird_animator);
+		m_world_cam.setIdentity();
+		m_world_cam.setTranslation(birdPositions[i]);
+		m_world_cam.setScale(OVec3(0.0010f, 0.0010f, 0.0010f));
+		setRuntimeEssentials(m_shader_prog);
+		m_bird_anim_model->Draw(m_shader_prog);
+
+	}
+	
+
+	/////////////////////
+	////////////////////
+
+	//rocket
+	drawAnimationModel(m_rocket_animator);
+	setTRS(OVec3(0.0f, -10.0f,-20.0f),-60.0f,OVec3(0.30f));
+	setRuntimeEssentials(m_shader_prog);
+	m_rocket_anim_model->Draw(m_shader_prog);
+
+
+	////////////////
+	///////////////
+
+	//iron man
+	//
+	drawAnimationModel(m_tony_animator);
+	setTRS(OVec3(0.0f, 0.0f,-2.0f),-60.0f,OVec3(0.00250f));
+	setRuntimeEssentials(m_shader_prog);
+	m_tony_anim_model->Draw(m_shader_prog);
+
+	//////////////
+	////////////
+	////man only
+	drawAnimationModel(m_man_animator);
+	setTRS(OVec3(5.0f, -4.0f, -3.0f),pos_para, OVec3(0.00250f));
+	setRuntimeEssentials(m_shader_prog);
+	m_man_anim_model->Draw(m_shader_prog);
+
+	////
+
+
+	
+
+	/////////////////
+	////////////////
+
+	
+	//draw lights
 	// we now draw as many light bulbs as we have point lights.
-	m_graphicsEngine->setLightVertexArrayObject(m_polygonVAO);
+	m_polygonVAO->BindVAO();
+	
 	for (unsigned int i = 0; i < 4; i++)
 	{
-		model.setIdentity();
-		model.setTranslation(pointLightPositions[i]);
-		model.setScale(OVec3(0.2f, 0.2f,0.2f)); // Make it a smaller cube
-		m_shader_prog_light->setMat4("model", model);
-		m_graphicsEngine->drawTriangles(TriangleStrip, m_polygonVAO->getVertexBufferSize(), 0);
+		m_world_cam.setIdentity();
+		m_world_cam.setTranslation(pointLightPositions[i]);
+		OVec3 scale =OVec3(0.2f);
+		m_world_cam.setScale(scale); // Make it a smaller cube
+		m_world_cam.setScale(scale); // Make it a smaller cube
+		setRuntimeEssentials(m_shader_prog_light);
+		m_graphicsEngine->drawTriangles(TriangleStrip, 36, 0);
 	}
-	*/
-	m_shader_prog->use();
-	m_view_cam = m_camera->GetViewMatrix();
-	m_shader_prog->setMat4("view", m_view_cam);
+	m_polygonVAO->UnbindVAO();
+	m_shader_prog_light->notuse();
 
-	
+	//drawing models
+	//////////////////
+	////jap house/////
+	//////////////////
 	m_world_cam.setIdentity();
-	m_world_cam.setTranslation(OVec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-	m_world_cam.setScale(OVec3(1, 1,1.0f));;	// it's a bit too big for our scene, so scale it down
+	m_world_cam.setTranslation(OVec3(6.0f,2.0f,-0.3f));
+	m_world_cam.setScale(OVec3(0.4f));
+	setRuntimeEssentials(m_model_shader);
+	m_jap_house->Draw(m_model_shader);
 
-	m_shader_prog->setMat4("model", m_world_cam);
-	m_model->Draw(m_shader_prog);
-	//m_graphicsEngine->drawModel(m_model,m_shader_prog, m_camera);
+	/////////////////////
+	////Russian house////
+	////////////////////
+
+
+	m_world_cam.setIdentity();
+	m_world_cam.setTranslation(OVec3(7.0f, 2.0f, -0.3f));
+	m_world_cam.setScale(OVec3(0.2f));
+	setRuntimeEssentials(m_model_shader);
+	m_model_airplane->Draw(m_model_shader);
+	*/
 	
+	/*
+	setTRS(OVec3(0.0f,0.0f,+5.0f), 0, OVec3(0.2f));
+	setRuntimeEssentials(m_model_shader);
+	m_jap_house->Draw(m_model_shader);
+	
+
+	*/
+
+	setTRS(OVec3(0.0f, 0.0f, 0.0f), OVec3(0.f, 0, .0f), OVec3(0.001f));
+	setRuntimeEssentials(m_shader_prog);
+	m_tony_anim_model->Draw(m_shader_prog);
+	
+	
+	for (int i = 0;i < 20;i++)
+	{
+		int j = -i;
+			setTRS(OVec3(-150+(i%5)*50,-19.6,5*(i*i)), OVec3(.0,-45.0f,.0f), OVec3(0.5f));
+			setRuntimeEssentials(m_model_shader);
+			m_old_house->Draw(m_model_shader);
+	}
+
+	setTRS(OVec3(-30.0f, -60.0f, -10.0f), OVec3(-90.f, 0, .0f), OVec3(1.0f));
+	setRuntimeEssentials(m_shader_prog);
+	m_rocket_anim_model->Draw(m_shader_prog);
+
+	for (int i = 0;i <20;i++)
+	{
+		int j = -i;
+		setTRS(OVec3(90+  (i % 5) * 90, -19.6, 5 * (-50+(i * i)%5)), OVec3(.0, 30.0f, .0f), OVec3(0.5f));
+		setRuntimeEssentials(m_model_shader);
+		m_old_house->Draw(m_model_shader);
+	}
+
+	
+	pos_para.m_y += 2.0f;
+	if (pos_para.m_y >= 150.0f)
+	{
+		pos_para.m_y =- 20.0f;
+	}
+	if (pos_para.m_y <= 35.0f && pos_para.m_y>=-9.0)
+	{
+		setTRS(OVec3(pos_para.m_x, pos_para.m_y, pos_para.m_z), 0, OVec3(0.7f));
+		setRuntimeEssentials(m_model_shader);
+		m_model_airplane->Draw(m_model_shader);
+	}
+
+
+
+
 	m_display->present(false);
 }
 
+void OGame::drawAnimationModel(OAnimatorPtr animator)
+{
+	auto transforms = animator->GetFinalBoneMatrices();
+	for (int i = 0; i < transforms.size(); ++i)
+		m_shader_prog->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
+}
+
+void OGame::setEssentials(ShaderPtr shader)
+{
+	shader->use();
+	shader->setMat4("projection", m_proj_cam);
+
+	float s = 0.0f;
+	shader->setVec3("dirLight.direction", -0.2f, 1.0f, 0.3f);
+	shader->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+	shader->setVec3("dirLight.diffuse", 0.8f, 0.8f, 0.8f);
+	shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+	// point light 1
+	shader->setVec3("pointLights[0].position", pointLightPositions[0]);
+	shader->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+	shader->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+	shader->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+	shader->setFloat("pointLights[0].constant", 1.0f);
+	shader->setFloat("pointLights[0].linear", s);
+	shader->setFloat("pointLights[0].quadratic", 0.032f);
+	// point light 2
+	shader->setVec3("pointLights[1].position", pointLightPositions[1]);
+	shader->setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+	shader->setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+	shader->setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+	shader->setFloat("pointLights[1].constant", 1.0f);
+	shader->setFloat("pointLights[1].linear", s);
+	shader->setFloat("pointLights[1].quadratic", 0.032f);
+	// point light 3
+	shader->setVec3("pointLights[2].position", pointLightPositions[2]);
+	shader->setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+	shader->setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+	shader->setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+	shader->setFloat("pointLights[2].constant", 1.0f);
+	shader->setFloat("pointLights[2].linear", 0.9f);
+	shader->setFloat("pointLights[2].quadratic", 0.032f);
+	// point light 4
+	shader->setVec3("pointLights[3].position", pointLightPositions[3]);
+	shader->setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+	shader->setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+	shader->setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+	shader->setFloat("pointLights[3].constant", 1.0f);
+	shader->setFloat("pointLights[3].linear", s);
+	shader->setFloat("pointLights[3].quadratic", 0.032f);
+	// spotLight
+
+	shader->setVec3("spotLight.ambient", 1.0f, 1.0f, 1.0f);
+	shader->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+	shader->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+	shader->setFloat("spotLight.constant", 1.0f);
+	shader->setFloat("spotLight.linear", s);
+	shader->setFloat("spotLight.quadratic", 0.032f);
+	shader->setFloat("spotLight.cutOff", static_cast<float>(cos(OMath::radians(12.5f))));
+	shader->setFloat("spotLight.outerCutOff", static_cast<float>(cos(OMath::radians(15.0f))));
+
+	shader->setFloat("material.shininess", 32.0f);
+	shader->notuse();
+
+	
+}
+
+void OGame::setFewEssentials(ShaderPtr shader)
+{
+	shader->use();
+	shader->setMat4("projection", m_proj_cam);
+	shader->notuse();
+}
+
+void OGame::setRuntimeEssentials(ShaderPtr shader)
+{
+	shader->use();
+	shader->setVec3("viewPos", m_camera->Front);
+
+
+	m_view_cam = m_camera->GetViewMatrix();
+	shader->setMat4("model", m_world_cam);
+	shader->setMat4("view", m_view_cam);
+
+
+	shader->setVec3("spotLight.position", m_camera->Position);
+	shader->setVec3("spotLight.direction", m_camera->Front);
+	//shader->notuse();
+}
+
+void OGame::setTRS(OVec3 tranlate, OVec3 rotate, OVec3 scale)
+{
+	m_world_cam.setIdentity();
+	
+	OMat4 temp;
+	temp.setTranslation(tranlate);
+	m_world_cam *= temp;
+	
+
+	temp.setIdentity();
+	temp.setRotationX(OMath::radians(rotate.m_x));
+	m_world_cam *= temp;
+	
+	temp.setIdentity();
+	temp.setRotationY(OMath::radians(rotate.m_y));
+	m_world_cam *= temp;
+	
+	temp.setIdentity();
+	temp.setRotationZ(OMath::radians(rotate.m_z));
+	m_world_cam *= temp;
+	
+	//0.0025 for tony
+	temp.setIdentity();
+	temp.setScale(scale);
+	m_world_cam *= temp;
+	
+}
+
+
+
+
+
 void OGame::onQuit()
 {
+	std::cout << pos_para.m_x<< ",\t" << pos_para.m_y<< ",\t" << pos_para.m_z << "\n";
 }
 
 void OGame::run()
 {
 	onCreate();
-	while (m_isRunning) 
+	while (m_isRunning)
 	{
 		MSG msg = {};
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE)) {
@@ -265,6 +556,7 @@ void OGame::run()
 
 void OGame::quit()
 {
+	
 	m_isRunning = false;
 }
 
@@ -272,11 +564,11 @@ void OGame::onKeyDown(int key)
 {
 	if (!m_play_state) return;
 
-	if (key == 'W')
+	if (key == 'W' || key == VK_UP)
 	{
 		m_camera->ProcessKeyboard(FORWARD, m_del);
 	}
-	else if (key == 'S')
+	else if (key == 'S' || key == VK_DOWN)
 	{
 		m_camera->ProcessKeyboard(BACKWARD, m_del);
 	}
@@ -284,9 +576,47 @@ void OGame::onKeyDown(int key)
 	{
 		m_camera->ProcessKeyboard(LEFT, m_del);
 	}
+
 	else if (key == 'D')
 	{
 		m_camera->ProcessKeyboard(RIGHT, m_del);
+	}
+
+	else if (key == 'R')
+	{
+		m_camera->ProcessKeyboard(RIGHT, m_del);
+	}
+	else if (key == 'T')
+	{
+		m_camera->ProcessKeyboard(RIGHT, m_del);
+	}
+
+	else if (key == VK_LEFT)
+	{
+		m_camera->ProcessMouseMovement(-20.0f, 0.0f);
+	}
+	else if (key == VK_RIGHT)
+	{
+		m_camera->ProcessMouseMovement(+20.0f, 0.0f);
+	}
+	
+	
+	else if (key == 'I')
+	{//slow
+		m_animation_speed = m_animation_speed - 0.1;
+		if (m_animation_speed < 0.0f)
+		{
+			m_animation_speed = 0.1f;
+		}
+	}
+	else if (key == 'O')
+	{
+		//fast
+		m_animation_speed = m_animation_speed + 0.1;
+		if (m_animation_speed >= 20.0f)
+		{
+			m_animation_speed = 20.0f;
+		}
 	}
 }
 
@@ -298,6 +628,11 @@ void OGame::onKeyUp(int key)
 		m_play_state = (m_play_state) ? false : true;
 		InputSystem::get()->showCursor(!m_play_state);
 	}
+	else if (key == VK_SPACE)
+	{
+		m_pause_state = (m_pause_state) ? false : true;
+	}
+
 	//m_camera_speed = 0.0f;
 	/*m_forward = 0.0f;
 	m_rightward = 0.0f;
@@ -322,7 +657,7 @@ void OGame::onMouseMove(const Point& mouse_pos)
 
 	f32 x_off = (mouse_pos.m_x - (width / 2.0f));
 	f32 y_off = (mouse_pos.m_y - (height / 2.0f));
-		
+
 	m_camera->ProcessMouseMovement(x_off, y_off);
 
 	InputSystem::get()->setCursorPosition(Point((int)(width / 2.0f), (int)(height / 2.0f)));
@@ -330,20 +665,20 @@ void OGame::onMouseMove(const Point& mouse_pos)
 
 void OGame::onLeftMouseDown(const Point& mouse_pos)
 {
-	//m_scale_cube = 0.5f;
+	
 }
 
 void OGame::onLeftMouseUp(const Point& mouse_pos)
 {
-	//m_scale_cube = 1.0f;
+	
 }
 
 void OGame::onRightMouseDown(const Point& mouse_pos)
 {
-	//m_scale_cube = 2.0f;
+	
 }
 
 void OGame::onRightMouseUp(const Point& mouse_pos)
 {
-	//m_scale_cube = 1.0f;
+	
 }

@@ -8,13 +8,16 @@
 #include <OGL3D/Math/OVec4.h>
 
 #include <OGL3D/Math/OMat4.h>
+#include <OGL3D/Math/OQuaternion.h>
 
 
 #include <chrono>
 class OGraphicsEngine;
 class OWindow;
-class ModelLoader;
-
+//class ModelLoader;
+class ModelAnimation;
+class Animators;
+class Animation;
 
 class OGame: public InputListener
 {
@@ -39,6 +42,14 @@ public:
 	virtual void onLeftMouseUp(const Point& mouse_pos) override;
 	virtual void onRightMouseDown(const Point& mouse_pos) override;
 	virtual void onRightMouseUp(const Point& mouse_pos) override;
+
+public:
+	void drawAnimationModel(OAnimatorPtr animator);
+	void setEssentials(ShaderPtr shader);
+	void setFewEssentials(ShaderPtr shader);
+	void setRuntimeEssentials(ShaderPtr shader);
+	void setTRS(OVec3 tranlate, OVec3 rotate, OVec3 scale);
+	
 private:
 
 
@@ -48,7 +59,9 @@ private:
 
 	OVec3 m_light_pos;
 
-	OVec3 pointLightPositions[4];
+
+	std::vector<OVec3> pointLightPositions;
+	std::vector<OVec3> birdPositions;
 protected:
 	bool m_isRunning = true;
 	std::unique_ptr<OGraphicsEngine> m_graphicsEngine;
@@ -57,6 +70,7 @@ protected:
 	OVertexArrayObjectPtr m_polygonVAO;
 	OUniformBufferPtr m_uniform;
 	//OShaderProgramPtr m_shader;
+	ShaderPtr m_model_shader;
 	ShaderPtr m_shader_prog;
 	ShaderPtr m_shader_prog_light;
 	OTexturePtr m_texture_1;
@@ -64,12 +78,59 @@ protected:
 
 	OCameraPtr m_camera;
 
-	OModelPtr m_model;
+	
+	OModelPtr m_jap_house;
+	OModelPtr m_rus_house;
+	OModelPtr m_old_house;
+	
+	
+	OModelPtr m_model_thor;
+	OModelPtr m_model_tree;
+	OModelPtr m_model_rocket;//note that its not animated
+	OModelPtr m_model_airplane;
+
+
+	OModelAnimationPtr m_man_anim_model;
+	OAnimationPtr m_man_animation;
+	OAnimatorPtr  m_man_animator;
+
+	OModelAnimationPtr m_tony_anim_model;
+	OAnimationPtr m_tony_animation;
+	OAnimatorPtr  m_tony_animator;
+
+	
+	OModelAnimationPtr m_bird_anim_model;
+	OAnimationPtr m_bird_animation;
+	OAnimatorPtr  m_bird_animator;
+
+	OModelAnimationPtr m_rocket_anim_model;
+	OAnimationPtr m_rocket_animation;
+	OAnimatorPtr  m_rocket_animator;
+
+	const char* model_bird;
+	const char* model_falcon;
+	const char* model_man;
+	const char* model_iron;
+	
+	const char*  model_jap_house;
+	const char*  model_rus_house;
+	const char*  model_old_house;
+
+
+	const char* model_thor;
+	const char* model_tree;
+	const char* model_rocket;
+	const char* model_airplane;
+	
 	std::chrono::system_clock::time_point m_previousTime;
 	f32 m_scale = 0;
 	bool m_play_state = false;
+	bool m_pause_state = true;
 
-	f32 m_del;
+	OVec3 pos_para=OVec3(-33.0,-9.6, 88.0f);
+	f32 size_para = 0.01f;
+	f32 m_del = 0.0f;
+	f32 m_animation_speed = 1.0f;
 	f32 lastX;// = SCR_WIDTH / 2.0f;
 	f32 lastY;// = SCR_HEIGHT / 2.0f;
 	bool firstMouse = true;

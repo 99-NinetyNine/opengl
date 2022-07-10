@@ -2,9 +2,11 @@
 
 Camera::Camera()
 {
-    Position = OVec3(0.0f,0.0f,3.0f);
+    //Position = OVec3(-0.230092525f, -8.76520729f, 3.29040790f);
+    Position = OVec3(0.0f, 0.0f, 5.0f);
     WorldUp = OVec3(0.0f, 1.0f, 0.0f);;//desc.up;
     updateCameraVectors();
+           
 }
 OMat4 Camera::GetViewMatrix()
 {
@@ -27,7 +29,7 @@ void Camera::ProcessKeyboard(CameraMovementDesc desc, f32 deltaTime)
     else if (desc == RIGHT)
         Position += Right * velocity;
     
-    //updateCameraVectors();
+    updateCameraVectors();
 }
 void Camera::ProcessMouseMovement(f32 xoffset, f32 yoffset, bool constrainPitch)
 {
@@ -72,4 +74,10 @@ void Camera::updateCameraVectors()
     // also re-calculate the Right and Up vector
     Right = OVec3::normalize(OVec3::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     Up = OVec3::normalize(OVec3::cross(Right, Front));
+}
+
+void Camera::changePitchYaw(f32 p, f32 y)
+{
+    Pitch = p;
+    Yaw = y;
 }

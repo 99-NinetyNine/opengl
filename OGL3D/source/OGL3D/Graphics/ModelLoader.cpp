@@ -4,6 +4,7 @@ ModelLoader::ModelLoader(string const& path, bool gamma)
 {
     gammaCorrection = gamma;
     loadModel(path);
+    OGL3D_INFO("Model loaded successfully:"<<path.c_str()<<"\n");
 }
 
 void ModelLoader::Draw(ShaderPtr shader)
@@ -16,7 +17,7 @@ void ModelLoader::loadModel(string const& path)
 {
     // read file via ASSIMP
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate |aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
@@ -73,6 +74,15 @@ Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene)
             vector.m_z = mesh->mNormals[i].z;
             vertex.Normal = vector;
         }
+        /*OVec4 col;
+        if (mesh->HasVertexColors(i))
+        {
+            col.m_x = mesh->mColors[i]->r;
+            col.m_y = mesh->mColors[i]->g;
+            col.m_z = mesh->mColors[i]->b;
+            col.m_w = mesh->mColors[i]->a;
+        }
+        vertex.Color = col;*/
         // texture coordinates
         if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {
@@ -108,13 +118,7 @@ Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene)
     }
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-    // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-    // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-    // Same applies to other texture as the following list summarizes:
-    // diffuse: texture_diffuseN
-    // specular: texture_specularN
-    // normal: texture_normalN
-
+    
     // 1. diffuse maps
     vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -128,7 +132,23 @@ Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-    // return a mesh object created from the extracted mesh data
+    int counter = 1;
+    while (textures.size() == 0 && counter <= 21)
+    {
+        //try everything
+        if (counter == 18)
+        {
+            counter++;
+            continue;
+
+        }
+        diffuseMaps = loadMaterialTextures(material, aiTextureType(counter), "texture_ambient");
+        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        counter++;
+    }
+    
+
+
     return Mesh(vertices, indices, textures);
 }
 
@@ -160,13 +180,20 @@ vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial* mat, aiTextureType
             textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
         }
     }
+    
     return textures;
 }
 unsigned int TextureFromFile(const char* path, const string& directory, bool gamma)
 {
     string filename = string(path);
-    filename = directory + '/' + filename;
+    filename = filename.substr(filename.find_last_of('/') + 1);
+    filename = directory + "/textures/" + filename;
 
+    string wild = filename.substr(filename.find_last_of('.') + 1);
+    if (wild.compare("tga") == 0)
+    {
+        filename = filename + ".png";
+    }
     unsigned int textureID;
     glGenTextures(1, &textureID);
 
@@ -181,11 +208,29 @@ unsigned int TextureFromFile(const char* path, const string& directory, bool gam
             format = GL_RGB;
         else if (nrComponents == 4)
             format = GL_RGBA;
-
+        glBindTexture(GL_TEXTURE_2D,0);
         glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        try
+        {
+            glTexImage2D(GL_TEXTURE_2D,0,format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        }
+        catch (...)
+        {
+            std::cout << "lol\n";
+        }
 
+        try
+        {
+        
+        glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        catch (...)
+        {
+            std::cout << "lol\n";
+        }
+
+
+        
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

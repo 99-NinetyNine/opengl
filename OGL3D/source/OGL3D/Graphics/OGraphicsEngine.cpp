@@ -8,6 +8,10 @@
 #include <OGL3D/Graphics/Mesh.h>
 #include <OGL3D/Graphics/ModelLoader.h>
 
+#include <OGL3D/Graphics/ModelAnimation.h>
+#include <OGL3D/Graphics/Animation.h>
+#include <OGL3D/Graphics/Animators.h>
+
 #include <OGL3D/Math/OVec3.h>
 #include <glad/glad_wgl.h>
 #include <glad/glad.h>
@@ -75,6 +79,7 @@ OVertexArrayObjectPtr OGraphicsEngine::createVertexArrayObject(const OVertexBuff
     return std::make_shared<OVertexArrayObject>(data);
 }
 
+
 OUniformBufferPtr OGraphicsEngine::createUniformBuffer(const OUniformBufferDesc& desc)
 {
     return std::make_shared<OUniformBuffer>(desc);
@@ -96,11 +101,33 @@ OModelPtr OGraphicsEngine::createModel(const char* filename)
 {
     return std::make_shared<ModelLoader>(filename);
 }
+OModelAnimationPtr OGraphicsEngine::createAnimationModel(const char* filename)
+{
+    return std::make_shared<ModelAnimation>(filename,false);
+}
+
+OAnimationPtr OGraphicsEngine::createAnimation(const char* filename,OModelAnimationPtr model)
+{
+    return std::make_shared<Animation>(filename,model);
+}
+
+OAnimatorPtr OGraphicsEngine::createAnimator(OAnimationPtr anim)
+{
+    return std::make_shared<Animators>(anim);
+}
+
 
 void OGraphicsEngine::drawModel(OModelPtr m,ShaderPtr shader_ptr, OCameraPtr camera_ptr)
 {
     // Go over all meshes and draw each one
     
+}
+
+void OGraphicsEngine::putpixel()
+{
+    glPointSize(10);
+    glDrawArrays(GL_POINTS, 0, 1);
+
 }
 
 
@@ -118,6 +145,25 @@ void OGraphicsEngine::clear(const OVec4 & color)
 void OGraphicsEngine::enable_depth_test()
 {
     glEnable(GL_DEPTH_TEST);
+}
+
+void OGraphicsEngine::enable_tlation()
+{
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
+}
+
+void OGraphicsEngine::enable_wireframe()
+
+{
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void OGraphicsEngine::depthMask(bool mask)
+{
+    if(mask)
+        glDepthFunc(GL_LEQUAL);
+    else
+        glDepthFunc(GL_LESS);
 }
 
 void OGraphicsEngine::setViewport(const ORect& size)
@@ -138,6 +184,11 @@ void OGraphicsEngine::setLightVertexArrayObject(const OVertexArrayObjectPtr& vao
 void OGraphicsEngine::setUniformBuffer(const OUniformBufferPtr& buffer, ui32 slot)
 {
     glBindBufferBase(GL_UNIFORM_BUFFER, slot, buffer->getId());
+}
+
+void OGraphicsEngine::activeTexture()
+{
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void OGraphicsEngine::bindTextureUnits(const OTexturePtr& texture)
@@ -172,4 +223,12 @@ void OGraphicsEngine::drawTriangles(const OTriangleType& triangleType, ui32 vert
     //glDrawArrays(glTriType, offset, vertexCount);
     //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+}
+
+
+
+void OGraphicsEngine::drawTessellation(ui32 VAO, ui32 size)
+{
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_PATCHES, 0, size);
 }

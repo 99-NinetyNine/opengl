@@ -3,8 +3,8 @@
 
 OVertexArrayObject::OVertexArrayObject()
 {
-	//glGenVertexArrays(1, &m_vertexArrayObjectId);
 }
+
 
 OVertexArrayObject::OVertexArrayObject(const OVertexBufferDesc& data)
 {
@@ -14,7 +14,11 @@ OVertexArrayObject::OVertexArrayObject(const OVertexBufferDesc& data)
 	//if (!data.indicesList) OGL3D_ERROR("OVertexArrayObject | indicedList is NULL");
 	
 	glGenVertexArrays(1, &m_vertexArrayObjectId);
+	glBindVertexArray(m_vertexArrayObjectId);
+
 	glGenBuffers(1, &m_vertexBufferId);	
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
+
 	//if element array object
 	if (data.indicesList != nullptr) 
 	{
@@ -25,10 +29,9 @@ OVertexArrayObject::OVertexArrayObject(const OVertexBufferDesc& data)
 		m_isElementArray = false;
 	}
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
 	glBufferData(GL_ARRAY_BUFFER, data.size_of_vertices, data.verticesList, GL_STATIC_DRAW);
 
-	glBindVertexArray(m_vertexArrayObjectId);
+	
 
 	//if element array object
 	if (data.indicesList != nullptr)
@@ -51,13 +54,17 @@ OVertexArrayObject::OVertexArrayObject(const OVertexBufferDesc& data)
 	}
 	//light VAO
 	
-	glGenVertexArrays(1, &m_lightArrayObjectId);
+	/*glGenVertexArrays(1, &m_lightArrayObjectId);
 	glBindVertexArray(m_lightArrayObjectId);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(0);*/
 
+	if (data.tesselation)
+	{
+		glPatchParameteri(GL_PATCH_VERTICES, data.num_patches);
+	}
 
 	m_vertexBufferData = data;
 }

@@ -60,13 +60,28 @@
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OGL3D\source\OGL3D\Graphics\Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\uOModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\ModelLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\ModelAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\Animators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Game\Tesseletation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Game\CubeBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OGL3D\source\OGL3D\Game\project.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,23 +152,59 @@
     <ClInclude Include="OGL3D\vendor\gltf\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\uOModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\ModelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\ModelAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Math\AssimpMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Math\OQuaternion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Bone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Animators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\bone_struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Game\Tesseletation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Game\CubeBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OGL3D\include\OGL3D\Game\project.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\BasicShader.vert" />
-    <None Include="Assets\Shaders\BasicShader.frag" />
-    <None Include="Assets\Shaders\LightSourcePixelShader.frag" />
-    <None Include="Assets\Shaders\LightSourceVertexShader.vert" />
     <None Include="OGL3D\vendor\ClassDiagram.cd" />
-    <None Include="Assets\Shaders\SimpleShader.frag" />
     <None Include="Assets\Models\sword\sword.gltf" />
+    <None Include="Assets\Shaders\Tessellation\VS.vert" />
+    <None Include="Assets\Shaders\Tessellation\PS.frag" />
+    <None Include="Assets\Shaders\Tessellation\TessellationControlShader.tcs" />
+    <None Include="Assets\Shaders\Tessellation\TessellationEvaluationShader.tes" />
+    <None Include="Assets\Shaders\Skybox\cVS.vert" />
+    <None Include="Assets\Shaders\Skybox\cPS.frag" />
+    <None Include="Assets\Shaders\Skybox\sVS.vert" />
+    <None Include="Assets\Shaders\Skybox\sPS.frag" />
+    <None Include="Assets\Shaders\ProjectShader\VS.vert" />
+    <None Include="Assets\Shaders\ProjectShader\PS.frag" />
+    <None Include="Assets\Shaders\ProjectAnimation\AnimationVS.vert" />
+    <None Include="Assets\Shaders\ProjectAnimation\AnimationPS.frag" />
+    <None Include="Assets\Shaders\ModelShader\BasicShader.vert" />
+    <None Include="Assets\Shaders\ModelShader\BasicShader.frag" />
   </ItemGroup>
 </Project>

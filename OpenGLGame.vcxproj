@@ -159,9 +159,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="OGL3D\source\OGL3D\Game\project.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Game\CubeBox.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\Animators.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\Animation.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\ModelLoader.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\uOModel.cpp" />
-    <ClCompile Include="OGL3D\source\OGL3D\Graphics\Model.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Graphics\ModelAnimation.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Mesh.cpp" />
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Camera.cpp" />
     <ClCompile Include="Game\main.cpp" />
@@ -182,18 +186,26 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="OGL3D\source\OGL3D\Graphics\Shader.cpp" />
+    <ClCompile Include="OGL3D\source\OGL3D\Game\Tesseletation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OGL3D\include\OGL3D\Game\CubeBox.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Animators.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Animation.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\bone_struct.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Bone.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\ModelLoader.h" />
-    <ClInclude Include="OGL3D\include\OGL3D\Graphics\Model.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Graphics\ModelAnimation.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Mesh.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Camera.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Game\OGame.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\uOModel.h" />
     <ClInclude Include="OGL3D\include\OGL3D\InputSystem\InputListener.h" />
     <ClInclude Include="OGL3D\include\OGL3D\InputSystem\InputSystem.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Math\AssimpMath.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Math\MathUtils.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Math\OMat4.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Math\OQuaternion.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Math\ORect.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Math\OVec4.h" />
     <ClInclude Include="OGL3D\include\OGL3D\Math\Point.h" />
@@ -214,34 +226,90 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="OGL3D\include\OGL3D\Graphics\Shader.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Game\Tesseletation.h" />
+    <ClInclude Include="OGL3D\include\OGL3D\Game\project.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Models\sword\sword.gltf" />
-    <None Include="Assets\Shaders\BasicShader.frag">
+    <None Include="Assets\Shaders\ProjectAnimation\AnimationPS.frag">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Assets\Shaders\BasicShader.vert">
+    <None Include="Assets\Shaders\ProjectAnimation\AnimationVS.vert">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Assets\Shaders\LightSourceVertexShader.vert">
+    <None Include="Assets\Shaders\ModelShader\BasicShader.frag">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Assets\Shaders\LightSourcePixelShader.frag">
+    <None Include="Assets\Shaders\ModelShader\BasicShader.vert">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Assets\Shaders\SimpleShader.frag">
+    <None Include="Assets\Shaders\ProjectShader\PS.frag">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\ProjectShader\VS.vert">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Skybox\cPS.frag">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Skybox\cVS.vert">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Skybox\sPS.frag">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Skybox\sVS.vert">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Tessellation\PS.frag">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Tessellation\TessellationControlShader.tcs">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Tessellation\TessellationEvaluationShader.tes">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Assets\Shaders\Tessellation\VS.vert">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

@@ -5,6 +5,10 @@ class OTexture
 {
 public:
 	OTexture(const OTextureDesc& desc);
+	void normalTexture(const OTextureDesc& desc);
+	void cubemapTexture(const OTextureDesc& desc);
+	void bindTexture();
+
 	~OTexture();
 	ui32 getId();
 	ui32 getCount();
@@ -16,6 +20,7 @@ public:
 	const char* path;
 private:
 	ui32 m_textureId = 0;
+	bool m_cubemap = false;
 	ui32 m_count = 0;
 	TextureSizeDesc m_sizeTexture;
 };
