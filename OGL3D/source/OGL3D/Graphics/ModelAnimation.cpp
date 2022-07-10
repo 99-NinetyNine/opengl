@@ -128,7 +128,7 @@ Mesh ModelAnimation::processMesh(aiMesh* mesh, const aiScene* scene)
 	int counter = 1;
 	if (textures.size() == 0 &&directory.substr(directory.find_last_of('/') + 1) == "source1")
 	{
-		std::cout << "rocket\n";
+		//std::cout << "rocket\n";
 	}
 	else
 	{

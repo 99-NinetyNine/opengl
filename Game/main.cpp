@@ -1,4 +1,4 @@
-#include <OGL3D/Game/OGame.h>
+#include <OGL3D/Game/project.h>
 //#include <OGL3D/Game/project.h>
 
 //#include <OGL3D/Game/Tesseletation.h>
@@ -7,7 +7,7 @@
 int main() {
 	try
 	{
-		OGame game;
+		project game;
       	game.run();
 	}
 	catch (const std::exception& e)
