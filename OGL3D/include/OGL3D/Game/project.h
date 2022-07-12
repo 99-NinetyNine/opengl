@@ -101,7 +101,7 @@ protected:
 	bool m_pause_state = true;
 
 	OVec3 pos_para = OVec3(-33.0, -9.6, 88.0f);
-	f32 size_para = 0.01f;
+	OVec3 pos_para2 = OVec3(-136, -60, -10);
 	f32 m_del = 0.0f;
 	f32 m_animation_speed = 1.0f;
 	f32 lastX;// = SCR_WIDTH / 2.0f;

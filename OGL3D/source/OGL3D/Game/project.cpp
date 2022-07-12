@@ -156,9 +156,9 @@ void project::onCreate()
 
 
 
-	m_tony_anim_model = m_graphicsEngine->createAnimationModel(model_iron);
-	m_tony_animation = m_graphicsEngine->createAnimation(model_iron, m_tony_anim_model);
-	m_tony_animator = m_graphicsEngine->createAnimator(m_tony_animation);
+	//m_tony_anim_model = m_graphicsEngine->createAnimationModel(model_iron);
+	//m_tony_animation = m_graphicsEngine->createAnimation(model_iron, m_tony_anim_model);
+	//m_tony_animator = m_graphicsEngine->createAnimator(m_tony_animation);
 	m_old_house = m_graphicsEngine->createModel(model_old_house);
 	m_model_airplane = m_graphicsEngine->createModel(model_airplane);
 
@@ -216,9 +216,9 @@ void project::onUpdate()
 	m_shader_prog_light->notuse();
 
 
-	setTRS(OVec3(0.0f, 0.0f, 0.0f), OVec3(0.f, 0, .0f), OVec3(0.001f));
+	/*setTRS(OVec3(0.0f, 0.0f, 0.0f), OVec3(0.f, 0, .0f), OVec3(0.001f));
 	setRuntimeEssentials(m_shader_prog);
-	m_tony_anim_model->Draw(m_shader_prog);
+	m_tony_anim_model->Draw(m_shader_prog);*/
 
 
 	for (int i = 0;i < 20;i++)
@@ -228,10 +228,16 @@ void project::onUpdate()
 		setRuntimeEssentials(m_model_shader);
 		m_old_house->Draw(m_model_shader);
 	}
-
+	
 	setTRS(OVec3(-30.0f, -60.0f, -10.0f), OVec3(-90.f, 0, .0f), OVec3(1.0f));
 	setRuntimeEssentials(m_shader_prog);
 	m_rocket_anim_model->Draw(m_shader_prog);
+
+	setTRS(pos_para2, OVec3(-90.f, 0, .0f), OVec3(1.0f));
+	setRuntimeEssentials(m_shader_prog);
+	m_rocket_anim_model->Draw(m_shader_prog);
+
+	
 
 	for (int i = 0;i < 20;i++)
 	{
@@ -382,7 +388,7 @@ void project::setTRS(OVec3 tranlate, OVec3 rotate, OVec3 scale)
 
 void project::onQuit()
 {
-	std::cout << pos_para.m_x << ",\t" << pos_para.m_y << ",\t" << pos_para.m_z << "\n";
+	std::cout << pos_para2.m_x << ",\t" << pos_para2.m_y << ",\t" << pos_para2.m_z << "\n";
 }
 
 void project::run()
@@ -437,14 +443,31 @@ void project::onKeyDown(int key)
 		m_camera->ProcessKeyboard(RIGHT, m_del);
 	}
 
+	/*else if (key == 'Q')
+	{
+		pos_para2.m_x -= 2.0f;
+	}
+	else if (key == 'E')
+	{
+		pos_para2.m_x += 2.0f;
+	}
 	else if (key == 'R')
 	{
-		m_camera->ProcessKeyboard(RIGHT, m_del);
+		pos_para2.m_y -= 2.0f;
 	}
 	else if (key == 'T')
 	{
-		m_camera->ProcessKeyboard(RIGHT, m_del);
+		pos_para2.m_y += 2.0f;
 	}
+
+	else if (key == 'Y')
+	{
+		pos_para2.m_z -= 2.0f;
+	}
+	else if (key == 'U')
+	{
+		pos_para2.m_z += 2.0f;
+	}*/
 
 	else if (key == VK_LEFT)
 	{
